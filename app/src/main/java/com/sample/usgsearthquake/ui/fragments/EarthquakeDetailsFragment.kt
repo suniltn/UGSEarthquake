@@ -1,0 +1,76 @@
+package com.sample.usgsearthquake.ui.fragments
+
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.sample.usgsearthquake.R
+import com.sample.usgsearthquake.ui.EarthquakeActivity
+import com.sample.usgsearthquake.ui.FeatureViewModel
+import kotlinx.android.synthetic.main.fragment_earthquake_deatils.*
+
+
+class EarthquakeDetailsFragment : Fragment(R.layout.fragment_earthquake_deatils) {
+
+    lateinit var viewModel: FeatureViewModel
+    val args: EarthquakeDetailsFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = (activity as EarthquakeActivity).viewModel
+        val earthquakeinfo = args.earthquakeDetail
+
+        webView.apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+            settings.databaseEnabled = true
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                    view.loadUrl(earthquakeinfo)
+                    return false
+                }
+            }
+            Log.d("EBAY", " The url is " + earthquakeinfo)
+
+
+        }
+        webView.loadUrl(earthquakeinfo)
+
+
+    }
+}
+
+/*
+
+ Log.d("EBAY", " The url is " + args.earthquakeDetail)
+        //webView.webViewClient = WebViewClient()
+
+        webView.webChromeClient =  WebChromeClient()
+        webView.settings.javaScriptEnabled = true
+        webView. settings.setAllowContentAccess(true);
+        webView.settings.setDomStorageEnabled(true);
+
+        webView.settings.setLoadWithOverviewMode(true);
+        webView.settings.setDomStorageEnabled(true);
+        webView.settings.setBlockNetworkImage(false);
+        webView.settings.setUseWideViewPort(true);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.settings.setMixedContentMode(0);
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
+
+        //webView.loadUrl("http://www.cleankutz.appointy.com");
+        //webView.loadUrl("http://www.cleankutz.appointy.com");
+        webView.loadUrl("https://google.com/")
+
+ */
