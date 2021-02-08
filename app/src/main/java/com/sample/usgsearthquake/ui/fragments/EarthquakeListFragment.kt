@@ -3,7 +3,6 @@ package com.sample.usgsearthquake.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout.HORIZONTAL
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,6 +16,7 @@ import com.sample.usgsearthquake.ui.FeatureViewModel
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.android.synthetic.main.fragment_earthquake.*
 
+//@AndroidEntryPoint
 class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
     lateinit var viewModel: FeatureViewModel
@@ -33,7 +33,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             }
 
             findNavController().navigate(
-                    R.id.action_earthquakeListFragment_to_earthquakeDetailsFragment, bundle
+                R.id.action_earthquakeListFragment_to_earthquakeDetailsFragment, bundle
             )
         }
 
@@ -51,7 +51,11 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "EBAY an Error oucccured $message", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            activity,
+                            "EBAY an Error oucccured $message",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Log.e("EBAY", "an Error oucccured $message")
 
                     }
@@ -80,10 +84,9 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
         rvEarthquakeList.apply {
             adapter = earthquakeAdapter
             layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
         }
-
 
 
     }

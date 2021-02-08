@@ -31,11 +31,11 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                        R.layout.two_item,
-                        parent,
-                        false
-                )
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.two_item,
+                parent,
+                false
+            )
         )
     }
 
@@ -45,7 +45,8 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
             loction_value.text = earthquakeData.location
             time_value_1.text = earthquakeData.quakeTime
             magnititude_value_1.text = earthquakeData.magnitude.toString()
-            coordinates_value_1.text = "(${earthquakeData.latitude.toString()},${earthquakeData.longitude.toString()})"
+            coordinates_value_1.text =
+                "(${earthquakeData.latitude.toString()},${earthquakeData.longitude.toString()})"
             setOnClickListener {
                 onItemClickListener?.let {
                     it(earthquakeData)
@@ -55,7 +56,7 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        Log.d("EBAY", "Size =  "+differ.currentList.size)
+        Log.d("EBAY", "Size =  " + differ.currentList.size)
         return differ.currentList.size
     }
 

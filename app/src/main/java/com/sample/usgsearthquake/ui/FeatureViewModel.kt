@@ -1,22 +1,19 @@
 package com.sample.usgsearthquake.ui
 
-import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.ConnectivityManager.*
-import android.net.Network
-import android.net.NetworkCapabilities.*
-import android.os.Build
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.usgsearthquake.EarthquakeApplication
 import com.sample.usgsearthquake.models.EarthquakeCustomResponse
 import com.sample.usgsearthquake.repository.FeatureRepository
+import com.sample.usgsearthquake.util.NetworkHelper
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.coroutines.launch
 
-class FeatureViewModel(private val repository: FeatureRepository, app: Application) : AndroidViewModel(app) {
+class FeatureViewModel @ViewModelInject constructor(
+    private val repository: FeatureRepository,
+    val networkHelper: NetworkHelper
+) : ViewModel() {
 
 
     val earthquakeData: MutableLiveData<Resource<EarthquakeCustomResponse>> = MutableLiveData()
@@ -35,7 +32,7 @@ class FeatureViewModel(private val repository: FeatureRepository, app: Applicati
     private suspend fun safeGetEarthquakes() {
         earthquakeData.postValue(Resource.Loading())
 
-        if (hasInternetConnection()) {
+        if (networkHelper.isNetworkConnected()) {
             val resource = repository.getEarthQuakesRemote()
             earthquakeData.postValue(resource)
         } else {
@@ -45,41 +42,6 @@ class FeatureViewModel(private val repository: FeatureRepository, app: Applicati
             else
                 earthquakeData.postValue(Resource.Success(EarthquakeCustomResponse(getAllData())))
         }
-
-    }
-
-
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<EarthquakeApplication>()
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val network: Network = connectivityManager.activeNetwork ?: return false
-            val fulfill = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                fulfill.hasTransport(TRANSPORT_WIFI) -> true
-                fulfill.hasTransport(TRANSPORT_CELLULAR) -> true
-                fulfill.hasTransport(TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-
-        } else {
-
-            connectivityManager.activeNetworkInfo?.run {
-                return when (type) {
-
-                    TYPE_WIFI -> true
-                    TYPE_MOBILE -> true
-                    TYPE_ETHERNET -> true
-                    else -> false
-
-                }
-            }
-        }
-
-
-        return false
-
 
     }
 

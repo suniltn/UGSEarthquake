@@ -1,7 +1,6 @@
 package com.sample.usgsearthquake.util
 
 import java.util.*
-import kotlin.math.round
 
 class DataConverter {
 

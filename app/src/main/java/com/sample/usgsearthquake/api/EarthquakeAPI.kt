@@ -10,12 +10,12 @@ interface EarthquakeAPI {
     @GET("/fdsnws/event/1/query")
 
     suspend fun getEarthquakes(
-            @Query("format")
-            format: String = "geojson",
-            @Query("starttime")
-            startTime: String = "2021-02-01",
-            @Query("limit")
-            limit:Int = 50
+        @Query("format")
+        format: String = "geojson",
+        @Query("starttime")
+        startTime: String = "2021-02-01",
+        @Query("limit")
+        limit: Int = 50
     ): Response<EarthquakeResponse>
 
 }

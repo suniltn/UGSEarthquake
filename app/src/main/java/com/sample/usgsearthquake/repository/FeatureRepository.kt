@@ -1,7 +1,7 @@
 package com.sample.usgsearthquake.repository
 
-import com.sample.usgsearthquake.api.RetrofitInstance
-import com.sample.usgsearthquake.db.EarthquakeDatabase
+import com.sample.usgsearthquake.api.EarthquakeAPI
+import com.sample.usgsearthquake.db.FeatureDao
 import com.sample.usgsearthquake.models.EarthquakeCustomResponse
 import com.sample.usgsearthquake.models.EarthquakeData
 import com.sample.usgsearthquake.models.EarthquakeResponse
@@ -9,12 +9,13 @@ import com.sample.usgsearthquake.util.DataConverter
 import com.sample.usgsearthquake.util.Extenstions.Companion.round
 import com.sample.usgsearthquake.util.Resource
 import retrofit2.Response
+import javax.inject.Inject
 
-class FeatureRepository(private val db: EarthquakeDatabase) {
+class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val featureDao: FeatureDao) {
 
     suspend fun getEarthQuakesRemote(): Resource<EarthquakeCustomResponse> {
 
-        val result: Response<EarthquakeResponse> = RetrofitInstance.api.getEarthquakes()
+        val result: Response<EarthquakeResponse> = apis.getEarthquakes()
         return porsess(result)
     }
 
@@ -51,14 +52,15 @@ class FeatureRepository(private val db: EarthquakeDatabase) {
         resultResponse.features.forEach {
 
             val earthquakeData = EarthquakeData(
-                    latitude = it.geometry.coordinates[0].round(3),
-                    longitude = it.geometry.coordinates[1].round(3),
-                    magnitude = it.properties.mag ?: 0.0,
-                    quakeTime = DataConverter.getDate(it.properties.time),
-                    location = it.properties.place ?: "Unknown",
-                    header = it.properties.title ?: "Unknown",
-                    detailsUrl = it.properties.url ?: "https://google.com",
-                    identifier = it.properties.ids ?: "0")
+                latitude = it.geometry.coordinates[0].round(3),
+                longitude = it.geometry.coordinates[1].round(3),
+                magnitude = it.properties.mag?.round(2) ?: 0.0,
+                quakeTime = DataConverter.getDate(it.properties.time),
+                location = it.properties.place ?: "Unknown",
+                header = it.properties.title ?: "Unknown",
+                detailsUrl = it.properties.url ?: "https://google.com",
+                identifier = it.properties.ids ?: "0"
+            )
 
             list.add(earthquakeData)
         }
@@ -68,10 +70,10 @@ class FeatureRepository(private val db: EarthquakeDatabase) {
 
     }
 
-    suspend fun upsert(earthquakeData: EarthquakeData) = db.getFeatureDao().upsert(earthquakeData)
+    suspend fun upsert(earthquakeData: EarthquakeData) = featureDao.upsert(earthquakeData)
 
-    suspend fun getFeaturesFromDB() = db.getFeatureDao().getEarthquakes()
+    suspend fun getFeaturesFromDB() = featureDao.getEarthquakes()
 
-    suspend fun deleteAllDB() = db.getFeatureDao().deleteAllEntries()
+    suspend fun deleteAllDB() = featureDao.deleteAllEntries()
 
 }
