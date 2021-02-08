@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sample.usgsearthquake.R
 import com.sample.usgsearthquake.adapters.EarthquakeAdapter
 import com.sample.usgsearthquake.ui.EarthquakeActivity
@@ -16,9 +17,10 @@ import com.sample.usgsearthquake.ui.FeatureViewModel
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.android.synthetic.main.fragment_earthquake.*
 
-//@AndroidEntryPoint
+
 class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
+    var totalItems: Long = -1;
     lateinit var viewModel: FeatureViewModel
     lateinit var earthquakeAdapter: EarthquakeAdapter
 
@@ -26,6 +28,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as EarthquakeActivity).viewModel
         setUpRecycletView()
+        setupScroll()
 
         earthquakeAdapter.setItemClickListener {
             val bundle = Bundle().apply {
@@ -33,9 +36,15 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             }
 
             findNavController().navigate(
-                R.id.action_earthquakeListFragment_to_earthquakeDetailsFragment, bundle
+                    R.id.action_earthquakeListFragment_to_earthquakeDetailsFragment, bundle
             )
         }
+
+        viewModel.earthquakeCount.observe(viewLifecycleOwner, Observer {
+            totalItems = it
+            Log.d("EBAY", "So the Total Count = $it")
+        }
+        )
 
         viewModel.earthquakeData.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -43,8 +52,8 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
                     hideProgressBar()
 
                     response.data?.let { earthquakeResponse ->
-                        earthquakeAdapter.differ.submitList(response.data.list)
-
+                        earthquakeAdapter.submitToDifferAsList(earthquakeResponse.list.toList())
+                        totalItems += earthquakeResponse.list.size
                     }
                 }
 
@@ -52,9 +61,9 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
                     hideProgressBar()
                     response.message?.let { message ->
                         Toast.makeText(
-                            activity,
-                            "EBAY an Error oucccured $message",
-                            Toast.LENGTH_LONG
+                                activity,
+                                "EBAY an Error oucccured $message",
+                                Toast.LENGTH_LONG
                         ).show()
                         Log.e("EBAY", "an Error oucccured $message")
 
@@ -69,6 +78,17 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
     }
 
+    private fun setupScroll() {
+        rvEarthquakeList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.getEarthquakes()
+                }
+            }
+        })
+    }
+
     private fun hideProgressBar() {
         progressBar.visibility = View.INVISIBLE
     }
@@ -77,9 +97,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
         progressBar.visibility = View.VISIBLE
     }
 
-
     private fun setUpRecycletView() {
-
         earthquakeAdapter = EarthquakeAdapter()
         rvEarthquakeList.apply {
             adapter = earthquakeAdapter
@@ -87,7 +105,6 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
         }
-
 
     }
 }

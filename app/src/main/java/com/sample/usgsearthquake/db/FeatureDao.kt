@@ -10,9 +10,9 @@ import com.sample.usgsearthquake.models.EarthquakeData
 interface FeatureDao {
 
     @Query("SELECT * FROM earthquakedata")
-    suspend fun getEarthquakes(): List<EarthquakeData>
+    suspend fun getEarthquakes(): MutableList<EarthquakeData>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun upsert(earthquakeData: EarthquakeData): Long
 
     @Query("DELETE FROM earthquakedata")

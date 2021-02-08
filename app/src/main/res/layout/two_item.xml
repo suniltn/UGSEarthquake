@@ -54,7 +54,6 @@
         android:text="01-01-2021"
         android:textColor="@color/cardview_light_background"
         android:textSize="15sp"
-
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/time_label_1"

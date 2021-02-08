@@ -13,10 +13,14 @@ import javax.inject.Inject
 
 class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val featureDao: FeatureDao) {
 
-    suspend fun getEarthQuakesRemote(): Resource<EarthquakeCustomResponse> {
+    suspend fun getEarthQuakesRemote(startDate: String, endDate: String): Resource<EarthquakeCustomResponse> {
 
-        val result: Response<EarthquakeResponse> = apis.getEarthquakes()
+        val result: Response<EarthquakeResponse> = apis.getEarthquakes(startTime = startDate, endTime = endDate)
         return porsess(result)
+    }
+
+    suspend fun getEarthQuakesRemoteCount(): Long {
+        return apis.getEarthquakesCount()
     }
 
     private suspend fun porsess(response: Response<EarthquakeResponse>): Resource<EarthquakeCustomResponse> {
@@ -26,7 +30,7 @@ class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val feature
             response.body()?.let { resultResponse ->
 
                 val customResponse = mapEarthquakeResponseToEarthquakeData(resultResponse)
-                deleteAllDB()
+                // deleteAllDB()
                 saveData(customResponse.data)
                 return customResponse
             }
@@ -52,19 +56,20 @@ class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val feature
         resultResponse.features.forEach {
 
             val earthquakeData = EarthquakeData(
-                latitude = it.geometry.coordinates[0].round(3),
-                longitude = it.geometry.coordinates[1].round(3),
-                magnitude = it.properties.mag?.round(2) ?: 0.0,
-                quakeTime = DataConverter.getDate(it.properties.time),
-                location = it.properties.place ?: "Unknown",
-                header = it.properties.title ?: "Unknown",
-                detailsUrl = it.properties.url ?: "https://google.com",
-                identifier = it.properties.ids ?: "0"
+                    latitude = it.geometry.coordinates[0].round(3),
+                    longitude = it.geometry.coordinates[1].round(3),
+                    magnitude = it.properties.mag?.round(2) ?: 0.0,
+                    quakeTime = DataConverter.getDate(it.properties.time),
+                    location = it.properties.place ?: "Unknown",
+                    header = it.properties.title ?: "Unknown",
+                    detailsUrl = it.properties.url ?: "https://google.com",
+                    identifier = it.properties.ids ?: "0"
+
             )
 
             list.add(earthquakeData)
         }
-        val flist: List<EarthquakeData> = ArrayList<EarthquakeData>(list)
+        val flist: MutableList<EarthquakeData> = ArrayList<EarthquakeData>(list)
 
         return Resource.Success(EarthquakeCustomResponse(flist))
 
