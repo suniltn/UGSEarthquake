@@ -1,8 +1,9 @@
 package com.sample.usgsearthquake.di
 
 import com.sample.usgsearthquake.api.EarthquakeAPI
-import com.sample.usgsearthquake.db.FeatureDao
-import com.sample.usgsearthquake.repository.FeatureRepository
+import com.sample.usgsearthquake.db.EarthquakeDao
+import com.sample.usgsearthquake.repository.EarthquakeRepositoryImpl
+import com.sample.usgsearthquake.repository.EarthquakeRepository
 import com.sample.usgsearthquake.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -42,8 +43,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFeatureRepository(api: EarthquakeAPI, db: FeatureDao): FeatureRepository {
-        return FeatureRepository(api, db)
+    fun provideFeatureRepository(api: EarthquakeAPI, db: EarthquakeDao): EarthquakeRepository {
+        return EarthquakeRepositoryImpl(api, db)
     }
 
 }

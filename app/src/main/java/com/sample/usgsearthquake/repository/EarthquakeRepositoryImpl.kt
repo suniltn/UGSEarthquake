@@ -1,25 +1,26 @@
 package com.sample.usgsearthquake.repository
 
 import com.sample.usgsearthquake.api.EarthquakeAPI
-import com.sample.usgsearthquake.db.FeatureDao
+import com.sample.usgsearthquake.db.EarthquakeDao
 import com.sample.usgsearthquake.models.EarthquakeCustomResponse
 import com.sample.usgsearthquake.models.EarthquakeData
-import com.sample.usgsearthquake.models.EarthquakeResponse
-import com.sample.usgsearthquake.util.DataConverter
+import com.sample.usgsearthquake.models.apimodels.EarthquakeResponse
+import com.sample.usgsearthquake.util.DateConverters
 import com.sample.usgsearthquake.util.Extenstions.Companion.round
 import com.sample.usgsearthquake.util.Resource
 import retrofit2.Response
 import javax.inject.Inject
 
-class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val featureDao: FeatureDao) {
 
-    suspend fun getEarthQuakesRemote(startDate: String, endDate: String): Resource<EarthquakeCustomResponse> {
+class EarthquakeRepositoryImpl @Inject constructor(private val apis: EarthquakeAPI, private val earthquakeDao: EarthquakeDao) : EarthquakeRepository {
+
+    override suspend fun getEarthQuakesRemote(startDate: String, endDate: String): Resource<EarthquakeCustomResponse> {
 
         val result: Response<EarthquakeResponse> = apis.getEarthquakes(startTime = startDate, endTime = endDate)
         return porsess(result)
     }
 
-    suspend fun getEarthQuakesRemoteCount(): Long {
+    override suspend fun getEarthQuakesRemoteCount(): Long {
         return apis.getEarthquakesCount()
     }
 
@@ -59,7 +60,7 @@ class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val feature
                     latitude = it.geometry.coordinates[0].round(3),
                     longitude = it.geometry.coordinates[1].round(3),
                     magnitude = it.properties.mag?.round(2) ?: 0.0,
-                    quakeTime = DataConverter.getDate(it.properties.time),
+                    quakeTime = DateConverters.getDate(it.properties.time),
                     location = it.properties.place ?: "Unknown",
                     header = it.properties.title ?: "Unknown",
                     detailsUrl = it.properties.url ?: "https://google.com",
@@ -75,10 +76,10 @@ class FeatureRepository @Inject constructor(val apis: EarthquakeAPI, val feature
 
     }
 
-    suspend fun upsert(earthquakeData: EarthquakeData) = featureDao.upsert(earthquakeData)
+    private suspend fun upsert(earthquakeData: EarthquakeData) = earthquakeDao.upsert(earthquakeData)
 
-    suspend fun getFeaturesFromDB() = featureDao.getEarthquakes()
+    override suspend fun getEarthquakeLocal() = earthquakeDao.getEarthquakes()
 
-    suspend fun deleteAllDB() = featureDao.deleteAllEntries()
+    override suspend fun deleteAllDB() = earthquakeDao.deleteAllEntries()
 
 }

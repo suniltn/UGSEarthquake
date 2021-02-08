@@ -1,6 +1,6 @@
 package com.sample.usgsearthquake.api
 
-import com.sample.usgsearthquake.models.EarthquakeResponse
+import com.sample.usgsearthquake.models.apimodels.EarthquakeResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

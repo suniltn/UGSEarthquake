@@ -3,11 +3,10 @@ package com.sample.usgsearthquake.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.sample.usgsearthquake.models.Geometry
-import com.sample.usgsearthquake.models.Properties
+import com.sample.usgsearthquake.models.apimodels.Geometry
+import com.sample.usgsearthquake.models.apimodels.Properties
 
 class Converters {
-
 
     @TypeConverter
     fun fromProperties(value: Properties): String {

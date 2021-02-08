@@ -8,5 +8,5 @@ import com.sample.usgsearthquake.models.EarthquakeData
 @Database(entities = [EarthquakeData::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun featureDao(): FeatureDao
+    abstract fun featureDao(): EarthquakeDao
 }

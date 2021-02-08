@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sample.usgsearthquake.R
 import com.sample.usgsearthquake.adapters.EarthquakeAdapter
 import com.sample.usgsearthquake.ui.EarthquakeActivity
-import com.sample.usgsearthquake.ui.FeatureViewModel
+import com.sample.usgsearthquake.ui.viewmodel.EarthquakeViewModel
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.android.synthetic.main.fragment_earthquake.*
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_earthquake.*
 class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
     var totalItems: Long = -1;
-    lateinit var viewModel: FeatureViewModel
+    lateinit var viewModel: EarthquakeViewModel
     lateinit var earthquakeAdapter: EarthquakeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

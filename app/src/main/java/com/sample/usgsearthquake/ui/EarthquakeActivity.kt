@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sample.usgsearthquake.R
+import com.sample.usgsearthquake.ui.viewmodel.EarthquakeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class EarthquakeActivity : AppCompatActivity() {
 
-    val viewModel: FeatureViewModel by viewModels()
+    val viewModel: EarthquakeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

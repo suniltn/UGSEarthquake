@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.sample.usgsearthquake.R
 import com.sample.usgsearthquake.ui.EarthquakeActivity
-import com.sample.usgsearthquake.ui.FeatureViewModel
+import com.sample.usgsearthquake.ui.viewmodel.EarthquakeViewModel
 import kotlinx.android.synthetic.main.fragment_earthquake_deatils.*
 
 
 class EarthquakeDetailsFragment : Fragment(R.layout.fragment_earthquake_deatils) {
 
-    lateinit var viewModel: FeatureViewModel
+    lateinit var viewModel: EarthquakeViewModel
     val args: EarthquakeDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

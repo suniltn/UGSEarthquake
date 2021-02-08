@@ -1,20 +1,20 @@
-package com.sample.usgsearthquake.ui
+package com.sample.usgsearthquake.ui.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.usgsearthquake.models.EarthquakeCustomResponse
-import com.sample.usgsearthquake.repository.FeatureRepository
-import com.sample.usgsearthquake.util.DataConverter
+import com.sample.usgsearthquake.repository.EarthquakeRepository
+import com.sample.usgsearthquake.util.DateConverters
 import com.sample.usgsearthquake.util.NetworkHelper
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FeatureViewModel @ViewModelInject constructor(
-        private val repository: FeatureRepository,
+class EarthquakeViewModel @ViewModelInject constructor(
+        private val repository: EarthquakeRepository,
         val networkHelper: NetworkHelper
 ) : ViewModel() {
 
@@ -29,8 +29,8 @@ class FeatureViewModel @ViewModelInject constructor(
     init {
         getEarthquakesCount()
 
-        startDate = DataConverter.minus1Days(Date())
-        endDate = DataConverter.getToday();
+        startDate = DateConverters.minus1Days(Date())
+        endDate = DateConverters.getToday();
 
         getEarthquakes()
 
@@ -44,7 +44,7 @@ class FeatureViewModel @ViewModelInject constructor(
         safeGetEarthquakesCount()
     }
 
-    private suspend fun getAllData() = repository.getFeaturesFromDB()
+    private suspend fun getAllData() = repository.getEarthquakeLocal()
 
     private suspend fun safeGetEarthquakes() {
         earthquakeData.postValue(Resource.Loading())
@@ -55,7 +55,7 @@ class FeatureViewModel @ViewModelInject constructor(
             if (earthquakeRespose == null) {
                 earthquakeRespose = resource
                 endDate = startDate
-                startDate = DataConverter.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+                startDate = DateConverters.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
             } else {
                 val oldData = earthquakeRespose!!.data?.list
                 val newData = resource.data?.list
@@ -63,7 +63,7 @@ class FeatureViewModel @ViewModelInject constructor(
                 if (newData != null) {
                     oldData?.addAll(newData)
                     endDate = startDate
-                    startDate = DataConverter.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+                    startDate = DateConverters.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
                 }
             }
             earthquakeData.postValue(earthquakeRespose)

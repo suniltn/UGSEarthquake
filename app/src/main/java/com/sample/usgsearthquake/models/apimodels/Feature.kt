@@ -1,4 +1,4 @@
-package com.sample.usgsearthquake.models
+package com.sample.usgsearthquake.models.apimodels
 
 
 import androidx.room.Entity

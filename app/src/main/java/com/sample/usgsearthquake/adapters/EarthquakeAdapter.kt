@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sample.usgsearthquake.R
 import com.sample.usgsearthquake.models.EarthquakeData
-import kotlinx.android.synthetic.main.two_item.view.*
+import kotlinx.android.synthetic.main.earthquake_item_view.view.*
 
 
 class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
@@ -27,7 +27,7 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
 
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
+    private val differ = AsyncListDiffer(this, differCallback)
 
     fun submitToDifferAsList(data: List<EarthquakeData>) {
         differ.submitList(data)
@@ -36,7 +36,7 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                        R.layout.two_item,
+                        R.layout.earthquake_item_view,
                         parent,
                         false
                 )

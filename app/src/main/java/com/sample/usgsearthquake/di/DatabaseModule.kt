@@ -3,7 +3,7 @@ package com.sample.usgsearthquake.di
 import android.content.Context
 import androidx.room.Room
 import com.sample.usgsearthquake.db.AppDatabase
-import com.sample.usgsearthquake.db.FeatureDao
+import com.sample.usgsearthquake.db.EarthquakeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 class DatabaseModule {
     @Provides
-    fun provideChannelDao(appDatabase: AppDatabase): FeatureDao {
+    fun provideChannelDao(appDatabase: AppDatabase): EarthquakeDao {
         return appDatabase.featureDao()
     }
 

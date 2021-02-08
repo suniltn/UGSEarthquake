@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.sample.usgsearthquake.models.EarthquakeData
 
 @Dao
-interface FeatureDao {
+interface EarthquakeDao {
 
     @Query("SELECT * FROM earthquakedata")
     suspend fun getEarthquakes(): MutableList<EarthquakeData>
