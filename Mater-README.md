@@ -36,6 +36,7 @@ Pagination with DiffUtil will process results much faster.
 
 
 Unit test
+
 Adding a Datastore fro repository pattren , I though this was over engineering for this App, So didn't use
 
 Use Executors pattren for coroutines (Main,IO, Default, trampoline) etc this helps if we have unit tests
