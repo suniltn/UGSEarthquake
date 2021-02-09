@@ -27,7 +27,6 @@ class EarthquakeData(
     }
 
     override fun hashCode(): Int {
-        var result = identifier.hashCode()
-        return result
+        return identifier.hashCode()
     }
 }

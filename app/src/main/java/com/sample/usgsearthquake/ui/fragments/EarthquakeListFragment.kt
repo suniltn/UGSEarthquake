@@ -105,6 +105,5 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
         }
-
     }
 }

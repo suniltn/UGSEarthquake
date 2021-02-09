@@ -11,6 +11,11 @@ import javax.inject.Singleton
 @Singleton
 class NetworkHelper @Inject constructor(@ApplicationContext private val context: Context) {
 
+    /**
+     *
+     * I have used this code form google codelab
+     */
+
     fun isNetworkConnected(): Boolean {
         var result = false
         val connectivityManager =

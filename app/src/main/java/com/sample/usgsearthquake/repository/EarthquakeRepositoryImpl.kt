@@ -12,19 +12,20 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class EarthquakeRepositoryImpl @Inject constructor(private val apis: EarthquakeAPI, private val earthquakeDao: EarthquakeDao) : EarthquakeRepository {
+class EarthquakeRepositoryImpl @Inject constructor(
+        private val apis: EarthquakeAPI,
+        private val earthquakeDao: EarthquakeDao) : EarthquakeRepository {
 
     override suspend fun getEarthQuakesRemote(startDate: String, endDate: String): Resource<EarthquakeCustomResponse> {
-
         val result: Response<EarthquakeResponse> = apis.getEarthquakes(startTime = startDate, endTime = endDate)
-        return porsess(result)
+        return process(result)
     }
 
     override suspend fun getEarthQuakesRemoteCount(): Long {
         return apis.getEarthquakesCount()
     }
 
-    private suspend fun porsess(response: Response<EarthquakeResponse>): Resource<EarthquakeCustomResponse> {
+    private suspend fun process(response: Response<EarthquakeResponse>): Resource<EarthquakeCustomResponse> {
 
         if (response.isSuccessful) {
 
@@ -44,9 +45,7 @@ class EarthquakeRepositoryImpl @Inject constructor(private val apis: EarthquakeA
     private suspend fun saveData(response: EarthquakeCustomResponse?) {
         response?.list?.forEach {
             upsert(it)
-
         }
-
     }
 
 
@@ -65,14 +64,10 @@ class EarthquakeRepositoryImpl @Inject constructor(private val apis: EarthquakeA
                     header = it.properties.title ?: "Unknown",
                     detailsUrl = it.properties.url ?: "https://google.com",
                     identifier = it.properties.ids ?: "0"
-
             )
-
             list.add(earthquakeData)
         }
-        val flist: MutableList<EarthquakeData> = ArrayList<EarthquakeData>(list)
-
-        return Resource.Success(EarthquakeCustomResponse(flist))
+        return Resource.Success(EarthquakeCustomResponse(ArrayList<EarthquakeData>(list)))
 
     }
 
@@ -81,5 +76,4 @@ class EarthquakeRepositoryImpl @Inject constructor(private val apis: EarthquakeA
     override suspend fun getEarthquakeLocal() = earthquakeDao.getEarthquakes()
 
     override suspend fun deleteAllDB() = earthquakeDao.deleteAllEntries()
-
 }

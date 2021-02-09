@@ -55,7 +55,7 @@ class EarthquakeViewModel @ViewModelInject constructor(
             if (earthquakeRespose == null) {
                 earthquakeRespose = resource
                 endDate = startDate
-                startDate = DateConverters.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+                startDate = DateConverters.minus1Days(DateConverters.dateToString(startDate))
             } else {
                 val oldData = earthquakeRespose!!.data?.list
                 val newData = resource.data?.list
@@ -63,7 +63,7 @@ class EarthquakeViewModel @ViewModelInject constructor(
                 if (newData != null) {
                     oldData?.addAll(newData)
                     endDate = startDate
-                    startDate = DateConverters.minus1Days(SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+                    startDate = DateConverters.minus1Days(DateConverters.dateToString(startDate))
                 }
             }
             earthquakeData.postValue(earthquakeRespose)

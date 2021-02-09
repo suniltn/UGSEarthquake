@@ -32,10 +32,12 @@ class DateConverters {
             val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
             return dateFormat.format(date)
         }
+
+        fun dateToString(d: String):Date
+        {
+            val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+            return dateFormat.parse(d)
+            //SimpleDateFormat("yyyy-MM-dd").parse(startDate)
+        }
     }
 }
-
-/* val c: Calendar = Calendar.getInstance()
-           c.time = Date()
-           c.add(Calendar.DAY_OF_MONTH, -3)
-*/

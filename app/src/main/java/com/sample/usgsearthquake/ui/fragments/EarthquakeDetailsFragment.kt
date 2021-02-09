@@ -35,42 +35,7 @@ class EarthquakeDetailsFragment : Fragment(R.layout.fragment_earthquake_deatils)
                 }
             }
             Log.d("EBAY", " The url is " + earthquakeinfo)
-
-
         }
         webView.loadUrl(earthquakeinfo)
-
-
     }
 }
-
-/*
-
- Log.d("EBAY", " The url is " + args.earthquakeDetail)
-        //webView.webViewClient = WebViewClient()
-
-        webView.webChromeClient =  WebChromeClient()
-        webView.settings.javaScriptEnabled = true
-        webView. settings.setAllowContentAccess(true);
-        webView.settings.setDomStorageEnabled(true);
-
-        webView.settings.setLoadWithOverviewMode(true);
-        webView.settings.setDomStorageEnabled(true);
-        webView.settings.setBlockNetworkImage(false);
-        webView.settings.setUseWideViewPort(true);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webView.settings.setMixedContentMode(0);
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-
-
-        //webView.loadUrl("http://www.cleankutz.appointy.com");
-        //webView.loadUrl("http://www.cleankutz.appointy.com");
-        webView.loadUrl("https://google.com/")
-
- */
