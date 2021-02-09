@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sample.usgsearthquake">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".EarthquakeApplication"
         android:allowBackup="true"
@@ -22,9 +25,5 @@
 
     </application>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

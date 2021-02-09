@@ -15,7 +15,7 @@ import java.util.*
 
 class EarthquakeViewModel @ViewModelInject constructor(
         private val repository: EarthquakeRepository,
-        val networkHelper: NetworkHelper
+        private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
 
@@ -54,16 +54,14 @@ class EarthquakeViewModel @ViewModelInject constructor(
 
             if (earthquakeRespose == null) {
                 earthquakeRespose = resource
-                endDate = startDate
-                startDate = DateConverters.minus1Days(DateConverters.dateToString(startDate))
+                moveDates()
             } else {
                 val oldData = earthquakeRespose!!.data?.list
                 val newData = resource.data?.list
 
                 if (newData != null) {
                     oldData?.addAll(newData)
-                    endDate = startDate
-                    startDate = DateConverters.minus1Days(DateConverters.dateToString(startDate))
+                    moveDates()
                 }
             }
             earthquakeData.postValue(earthquakeRespose)
@@ -77,6 +75,11 @@ class EarthquakeViewModel @ViewModelInject constructor(
                 earthquakeData.postValue(Resource.Success(EarthquakeCustomResponse(getAllData())))
         }
 
+    }
+    /* Move for the next set of dates for pagination*/
+    private fun moveDates() {
+        endDate = startDate
+        startDate = DateConverters.minus1Days(DateConverters.dateToString(startDate))
     }
 
 

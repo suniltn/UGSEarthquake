@@ -20,14 +20,15 @@ import kotlinx.android.synthetic.main.fragment_earthquake.*
 
 class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
-    var totalItems: Long = -1;
+    var totalCount: Long = -1;
+    var totalItemsProcessed : Long = 0
     lateinit var viewModel: EarthquakeViewModel
     lateinit var earthquakeAdapter: EarthquakeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as EarthquakeActivity).viewModel
-        setUpRecycletView()
+        setUpRecyclerView()
         setupScroll()
 
         earthquakeAdapter.setItemClickListener {
@@ -41,7 +42,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
         }
 
         viewModel.earthquakeCount.observe(viewLifecycleOwner, Observer {
-            totalItems = it
+            totalCount = it
             Log.d("EBAY", "So the Total Count = $it")
         }
         )
@@ -53,7 +54,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
                     response.data?.let { earthquakeResponse ->
                         earthquakeAdapter.submitToDifferAsList(earthquakeResponse.list.toList())
-                        totalItems += earthquakeResponse.list.size
+                        totalItemsProcessed += earthquakeResponse.list.size
                     }
                 }
 
@@ -83,6 +84,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if(totalCount > 0 && totalItemsProcessed < totalCount)
                     viewModel.getEarthquakes()
                 }
             }
@@ -97,7 +99,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun setUpRecycletView() {
+    private fun setUpRecyclerView() {
         earthquakeAdapter = EarthquakeAdapter()
         rvEarthquakeList.apply {
             adapter = earthquakeAdapter
