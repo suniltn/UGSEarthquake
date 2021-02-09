@@ -1,6 +1,6 @@
 package com.sample.usgsearthquake.util
 
-class Extenstions {
+class Extensions {
 
     companion object {
         fun Double.round(decimals: Int): Double {
@@ -8,8 +8,5 @@ class Extenstions {
             repeat(decimals) { multiplier *= 10 }
             return kotlin.math.round(this * multiplier) / multiplier
         }
-
-
     }
-
 }

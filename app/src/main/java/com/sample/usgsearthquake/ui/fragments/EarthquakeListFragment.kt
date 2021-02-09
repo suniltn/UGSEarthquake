@@ -24,6 +24,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
     var totalItemsProcessed : Long = 0
     lateinit var viewModel: EarthquakeViewModel
     lateinit var earthquakeAdapter: EarthquakeAdapter
+    private val TAG = "EarthquakeListFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +44,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
         viewModel.earthquakeCount.observe(viewLifecycleOwner, Observer {
             totalCount = it
-            Log.d("EBAY", "So the Total Count = $it")
+            Log.d(TAG, "So the Total Count = $it")
         }
         )
 
@@ -51,7 +52,6 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-
                     response.data?.let { earthquakeResponse ->
                         earthquakeAdapter.submitToDifferAsList(earthquakeResponse.list.toList())
                         totalItemsProcessed += earthquakeResponse.list.size
@@ -63,10 +63,10 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
                     response.message?.let { message ->
                         Toast.makeText(
                                 activity,
-                                "EBAY an Error oucccured $message",
+                                "Network Error $message",
                                 Toast.LENGTH_LONG
                         ).show()
-                        Log.e("EBAY", "an Error oucccured $message")
+                        Log.e(TAG, "Network Error $message")
 
                     }
                 }

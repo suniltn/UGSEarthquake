@@ -16,9 +16,5 @@ class EarthquakeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_earthquake)
-
-        // val repository = FeatureRepository(EarthquakeDatabase(this))
-        //  val viewModelProviderFactory = FeatureViewModelPrividerFactory(application, repository)
-        // viewModel = ViewModelProvider(this, viewModelProviderFactory).get(FeatureViewModel::class.java)
     }
 }

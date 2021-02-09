@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.earthquake_item_view.view.*
 
 
 class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
-
+    private val TAG = "EarthquakeAdapter"
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<EarthquakeData>() {
@@ -49,8 +49,7 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
             loction_value.text = earthquakeData.location
             time_value_1.text = earthquakeData.quakeTime
             magnititude_value_1.text = earthquakeData.magnitude.toString()
-            coordinates_value_1.text =
-                    "(${earthquakeData.latitude.toString()},${earthquakeData.longitude.toString()})"
+            coordinates_value_1.text = formatLocation(earthquakeData)
             setOnClickListener {
                 onItemClickListener?.let {
                     it(earthquakeData)
@@ -59,8 +58,11 @@ class EarthquakeAdapter : RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
         }
     }
 
+    private fun formatLocation(earthquakeData: EarthquakeData) =
+            "(${earthquakeData.longitude.toString()} , ${earthquakeData.latitude.toString()})"
+
     override fun getItemCount(): Int {
-        Log.d("EBAY", "Size =  " + differ.currentList.size)
+        Log.d(TAG, "Size =  " + differ.currentList.size)
         return differ.currentList.size
     }
 

@@ -6,7 +6,7 @@ import com.sample.usgsearthquake.models.EarthquakeCustomResponse
 import com.sample.usgsearthquake.models.EarthquakeData
 import com.sample.usgsearthquake.models.apimodels.EarthquakeResponse
 import com.sample.usgsearthquake.util.DateConverters
-import com.sample.usgsearthquake.util.Extenstions.Companion.round
+import com.sample.usgsearthquake.util.Extensions.Companion.round
 import com.sample.usgsearthquake.util.Resource
 import retrofit2.Response
 import javax.inject.Inject
@@ -56,13 +56,13 @@ class EarthquakeRepositoryImpl @Inject constructor(
         resultResponse.features.forEach {
 
             val earthquakeData = EarthquakeData(
-                    latitude = it.geometry.coordinates[0].round(3),
-                    longitude = it.geometry.coordinates[1].round(3),
+                    longitude = it.geometry.coordinates[0].round(3),
+                    latitude = it.geometry.coordinates[1].round(3),
                     magnitude = it.properties.mag?.round(2) ?: 0.0,
                     quakeTime = DateConverters.getDate(it.properties.time),
                     location = it.properties.place ?: "Unknown",
                     header = it.properties.title ?: "Unknown",
-                    detailsUrl = it.properties.url ?: "https://google.com",
+                    detailsUrl = it.properties.url ?: "https://earthquake.usgs.gov/fdsnws/event/1/",
                     identifier = it.properties.ids ?: "0"
             )
             list.add(earthquakeData)

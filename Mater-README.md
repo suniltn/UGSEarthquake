@@ -1,22 +1,19 @@
 # UGSEarthquake
-Coding excersise
-
-# UGSEarthquake
-Coding excersise , 100% Kotlin
+Coding exercise , 100% Kotlin
 
 **Used below:**
 
 MVVM
 
-Repository Pattren(Clean Code Architecture)
+Repository Pattern (Clean Code Architecture)
 
 Pagination
 
 Coroutines
 
-Nav Garph (Navigation Componenet)
+Nav Graph (Navigation Component)
 
-DI using Dagger Hilt from Andorid Framework
+DI using Dagger Hilt from Android Framework
 
 Room Database
 
@@ -27,20 +24,20 @@ RecyclerView with DiffUtil
 **Pagination**
 
 
-I noticed that requesting for 30 days Earthquake data will give more than 10,000 results. User has to wait for a long time seeing the progressbar. 
-So I added the pagination for requesting 1 day at a time (~200 results) by uing start time and end time in the API. and updating those on subsequent requests.
-Pagination with DiffUtil will process results much faster. 
+I noticed that requesting 30 days of Earthquake data will give more than 10,000 results. User has to wait for a long time seeing the progressbar.
+So I added the pagination for requesting 1 day at a time (~200 results) by using start time and end time in the API. and updating those on subsequent requests.
+Pagination with DiffUtil will process results much faster.
 
 
-**TODO:**
+**Future Improvements:**
 
 
 Unit test
 
-Adding a Datastore fro repository pattren , I though this was over engineering for this App, So didn't use
+Adding a Datastore for repository pattern as an Improvement
 
-Use Executors pattren for coroutines (Main,IO, Default, trampoline) etc this helps if we have unit tests
+Use Executors pattern for coroutines (Main,IO, Default, trampoline) etc this helps if we have unit tests
 
 More attractive UI
 
-Support for Master-Detail pattren for tablet landscape mode.
+Support for Master-Detail pattern for tablet landscape mode.

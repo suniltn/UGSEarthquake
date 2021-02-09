@@ -10,48 +10,40 @@ import com.sample.usgsearthquake.util.DateConverters
 import com.sample.usgsearthquake.util.NetworkHelper
 import com.sample.usgsearthquake.util.Resource
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 class EarthquakeViewModel @ViewModelInject constructor(
         private val repository: EarthquakeRepository,
-        private val networkHelper: NetworkHelper
-) : ViewModel() {
-
+        private val networkHelper: NetworkHelper) : ViewModel() {
 
     val earthquakeData: MutableLiveData<Resource<EarthquakeCustomResponse>> = MutableLiveData()
     val earthquakeCount: MutableLiveData<Long> = MutableLiveData()
     var earthquakeRespose: Resource<EarthquakeCustomResponse>? = null
-
     lateinit var startDate: String
     lateinit var endDate: String
 
     init {
         getEarthquakesCount()
-
         startDate = DateConverters.minus1Days(Date())
         endDate = DateConverters.getToday();
-
         getEarthquakes()
-
     }
 
     fun getEarthquakes() = viewModelScope.launch {
         safeGetEarthquakes()
     }
 
-    fun getEarthquakesCount() = viewModelScope.launch {
+    private fun getEarthquakesCount() = viewModelScope.launch {
         safeGetEarthquakesCount()
     }
 
-    private suspend fun getAllData() = repository.getEarthquakeLocal()
+    private suspend fun getCachedData() = repository.getEarthquakeLocal()
 
     private suspend fun safeGetEarthquakes() {
         earthquakeData.postValue(Resource.Loading())
 
         if (networkHelper.isNetworkConnected()) {
             val resource = repository.getEarthQuakesRemote(startDate, endDate)
-
             if (earthquakeRespose == null) {
                 earthquakeRespose = resource
                 moveDates()
@@ -68,11 +60,12 @@ class EarthquakeViewModel @ViewModelInject constructor(
 
 
         } else {
-            val fromDb = getAllData()
+            val fromDb = getCachedData()
             if (fromDb == null || fromDb.isEmpty())
-                earthquakeData.postValue(Resource.Error("NO Internet or Cache"))
-            else
-                earthquakeData.postValue(Resource.Success(EarthquakeCustomResponse(getAllData())))
+                earthquakeData.postValue(Resource.Error("No Internet or Cache"))
+            else {
+                earthquakeData.postValue(Resource.Success(EarthquakeCustomResponse(getCachedData())))
+            }
         }
 
     }
