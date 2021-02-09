@@ -25,12 +25,16 @@ Retrofit and Gson
 RecyclerView with DiffUtil
 
 **Pagination**
+
+
 I noticed that requesting for 30 days Earthquake data will give more than 10,000 results. User has to wait for a long time seeing the progressbar. 
 So I added the pagination for requesting 1 day at a time (~200 results) by uing start time and end time in the API. and updating those on subsequent requests.
 Pagination with DiffUtil will process results much faster. 
 
 
 **TODO:**
+
+
 Unit test
 Adding a Datastore fro repository pattren , I though this was over engineering for this App, So didn't use
 
