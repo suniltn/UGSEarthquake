@@ -1,0 +1,2 @@
+# UGSEarthquake
+Coding excersise
