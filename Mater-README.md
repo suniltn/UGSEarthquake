@@ -1,3 +1,5 @@
+** Check out master branch for code**
+
 # UGSEarthquake
 Coding exercise , 100% Kotlin
 
