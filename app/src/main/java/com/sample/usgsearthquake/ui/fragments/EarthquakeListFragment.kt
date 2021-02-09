@@ -14,10 +14,14 @@ import com.sample.usgsearthquake.R
 import com.sample.usgsearthquake.adapters.EarthquakeAdapter
 import com.sample.usgsearthquake.ui.EarthquakeActivity
 import com.sample.usgsearthquake.ui.viewmodel.EarthquakeViewModel
+import com.sample.usgsearthquake.util.NetworkHelper
 import com.sample.usgsearthquake.util.Resource
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_earthquake.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
 
     var totalCount: Long = -1;
@@ -25,6 +29,9 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
     lateinit var viewModel: EarthquakeViewModel
     lateinit var earthquakeAdapter: EarthquakeAdapter
     private val TAG = "EarthquakeListFragment"
+
+    @Inject
+    lateinit var internetHelper : NetworkHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,7 +83,7 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
                 }
             }
         })
-
+        checkNetwork()
     }
 
     private fun setupScroll() {
@@ -106,6 +113,16 @@ class EarthquakeListFragment : Fragment(R.layout.fragment_earthquake) {
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
+        }
+    }
+
+    private fun checkNetwork() {
+        if (!internetHelper.isNetworkConnected()) {
+            Toast.makeText(
+                activity,
+                " No Network",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

@@ -13,7 +13,7 @@ class NetworkHelper @Inject constructor(@ApplicationContext private val context:
 
     /**
      *
-     * I have used this code form google code-lab
+     * Reference : Google code-lab
      */
 
     fun isNetworkConnected(): Boolean {
